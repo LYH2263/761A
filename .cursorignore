@@ -1,0 +1,23 @@
+﻿# 本地开发记录
+题目.md
+迭代.md
+代码生成.md
+对话/
+
+# 开发过程文档
+故障排查指南.md
+购物车功能增强说明.md
+Toast样式升级说明.md
+修改说明.md
+修改总结.txt
+购物车修改完成报告.md
+功能实现检查报告.md
+user_rule.md
+result.md
+
+# 构建产物
+target/
+
+# Agent 本地配置
+.claude/
+AGENTS.md
