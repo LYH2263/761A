@@ -1,5 +1,6 @@
-# 构建阶段
-FROM maven:3.9-eclipse-temurin-8 AS build
+# 构建阶段（DOCKER_REGISTRY 默认使用 DaoCloud 镜像，避免 Docker Hub 拉取不完整）
+ARG DOCKER_REGISTRY=docker.m.daocloud.io/
+FROM ${DOCKER_REGISTRY}maven:3.9-eclipse-temurin-8 AS build
 WORKDIR /app
 
 # 复制Maven配置（使用阿里云镜像加速）
@@ -7,7 +8,7 @@ COPY settings.xml /usr/share/maven/ref/settings.xml
 
 # 复制pom.xml并预下载依赖
 COPY pom.xml .
-RUN mvn -s /usr/share/maven/ref/settings.xml dependency:go-offline
+RUN mvn -s /usr/share/maven/ref/settings.xml dependency:resolve dependency:resolve-plugins -B
 
 # 复制源代码并打包
 COPY src ./src
@@ -15,7 +16,8 @@ RUN mvn -s /usr/share/maven/ref/settings.xml package -DskipTests && \
     cd /app/target && mkdir ROOT && cd ROOT && jar -xf ../bookstore.war
 
 # 运行阶段
-FROM tomcat:9.0-jre8
+ARG DOCKER_REGISTRY=docker.m.daocloud.io/
+FROM ${DOCKER_REGISTRY}tomcat:9.0-jre8
 WORKDIR /usr/local/tomcat
 
 # 设置UTF-8环境变量

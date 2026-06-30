@@ -1,7 +1,7 @@
 services:
   # MySQL数据库（容器名由 compose 自动生成，如 761-db-1，避免与旧容器冲突）
   db:
-    image: mysql:8.0
+    image: docker.m.daocloud.io/mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root123
       MYSQL_DATABASE: bookstore
@@ -26,6 +26,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        DOCKER_REGISTRY: docker.m.daocloud.io/
     ports:
       - "8747:8080"
     depends_on:
